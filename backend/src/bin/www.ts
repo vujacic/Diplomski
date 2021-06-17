@@ -3,10 +3,13 @@
 /**
  * Module dependencies.
  */
-
-var app = require('../app');
-var debug = require('debug')('backend:server');
-var http = require('http');
+import app from '../app';
+// var app = require('../app.js');
+//import Debug from 'debug';
+//const debug = Debug('backend:server');
+//var debug = require('debug')('backend:server');
+import http from 'http';
+//var http = require('http');
 
 /**
  * Get port from environment and store in Express.
@@ -85,6 +88,6 @@ function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+    : 'port ' + addr?.port;
+  console.log('Listening on ' + bind);
 }
