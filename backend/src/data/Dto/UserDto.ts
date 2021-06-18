@@ -1,6 +1,6 @@
-import {Count, Filter} from "./Filter";
+import {Arango, Count, Filter} from "./Filter";
 
-export class UserDto{
+export class UserDto implements Arango{
     _key: string;
     _rev: string;
     _id: string;
@@ -9,15 +9,15 @@ export class UserDto{
     pass: string;
     status: number;
 
-    constructor(key: string, rev: string, id: string, name: string, email: string, pass: string, status: number) {
-        this._key = key;
-        this._rev = rev;
-        this._id = id;
-        this.name = name;
-        this.email = email;
-        this.pass = pass;
-        this.status = status;
-    }
+    // constructor(key: string, rev: string, id: string, name: string, email: string, pass: string, status: number) {
+    //     this._key = key;
+    //     this._rev = rev;
+    //     this._id = id;
+    //     this.name = name;
+    //     this.email = email;
+    //     this.pass = pass;
+    //     this.status = status;
+    // }
 
 }
 
@@ -28,12 +28,12 @@ export class UserFilter extends UserDto implements Filter {
     sort: string;
 
 
-    constructor(key: string, rev: string, id: string, name: string, email: string, pass: string, status: number, limit: string, page: string, asc: string, sort: string) {
-        super(key, rev, id, name, email, pass, status);
-        this.limit = limit;
-        this.page = page;
-        this.order = asc;
-        this.sort = sort;
-    }
+    // constructor(key: string, rev: string, id: string, name: string, email: string, pass: string, status: number, limit: string, page: string, asc: string, sort: string) {
+    //     super(key, rev, id, name, email, pass, status);
+    //     this.limit = limit;
+    //     this.page = page;
+    //     this.order = asc;
+    //     this.sort = sort;
+    // }
 }
 

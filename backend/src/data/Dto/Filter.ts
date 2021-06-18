@@ -8,3 +8,9 @@ export interface Filter{
 export interface Count{
     count: number;
 }
+
+export interface Arango{
+    _key: string;
+    _rev: string;
+    _id: string;
+}

@@ -10,7 +10,8 @@ import logger from 'morgan'
 
 // var indexRouter = require('./controllers/index');
 //var usersRouter = require('./controllers/users');
-import usersController from './controllers/users';
+import usersController from './controllers/usersController';
+import contentController from "./controllers/contentController";
 
 var app = express();
 
@@ -28,6 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // app.use('/', indexRouter);
 app.use('/api/users', usersController);
+app.use('/api/content', contentController)
 
 app.use(function(err, req, res, next){
     // whatever you want here, feel free to populate

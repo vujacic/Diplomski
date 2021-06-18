@@ -4,7 +4,7 @@
 import express from 'express';
 import {UserService} from "../data/UserService";
 import {UserDto, UserFilter} from "../data/Dto/UserDto";
-var router = express.Router();
+const router = express.Router();
 const userService = new UserService();
 
 
@@ -41,7 +41,8 @@ router.post('/', function(req, res, next) {
 
 router.put('/:id', function(req, res, next) {
     const newUser = req.body;
-    userService.update(newUser)
+    const id = req.params['id'];
+    userService.update(id, newUser)
         .then((res1) =>
             res.send(res1))
         .catch((error)=> {
