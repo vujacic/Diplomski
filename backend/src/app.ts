@@ -12,12 +12,14 @@ import logger from 'morgan'
 //var usersRouter = require('./controllers/users');
 import usersController from './controllers/usersController';
 import contentController from "./controllers/contentController";
+import cors from 'cors'
 
 var app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors({origin: ['http://localhost:8080']}))
 // app.use(cookieParser());
 // app.use(sassMiddleware({
 //   src: path.join(__dirname, 'public'),

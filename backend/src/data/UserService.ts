@@ -20,7 +20,7 @@ export class UserService{
                 filter u._key == ${id}
                 return u
                 `);
-            return res.all();
+            return res.next();
     }
 
     async update(id: string, user: UserDto){

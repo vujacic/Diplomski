@@ -20,8 +20,9 @@ router.get('/', function(req, res, next) {
 router.get('/:id', function(req, res, next) {
     //res.send('respond with a resource');
     contentService.get(req.params['id'])
-        .then((res1) =>
-            res.send(res1))
+        .then((res1) =>{
+           return res.send(res1);
+        })
         .catch((error)=> {
             next(error);
         });

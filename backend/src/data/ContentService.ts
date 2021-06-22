@@ -19,7 +19,7 @@ export class ContentService{
                 filter c._key == ${id}
                 return c
                 `);
-            return res.all();
+            return await res.next();
     }
 
     async update(id: string, content: ContentDto){
