@@ -33,7 +33,7 @@ export class ContentService{
             let res = await Db.query(aql`
                 for c in ${this.content}
                 sort c.${filter.sort} ${filter.order}
-                limit ${paging.offset}, ${paging.limit}
+                limit ${paging.page}, ${paging.limit}
                 return c
                 `);
             let cursor = await Db.query(aql`
