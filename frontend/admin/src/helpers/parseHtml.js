@@ -2,6 +2,9 @@ const inlineElements = ['a','b','strong','br','em','i']
 
 function indentHtml(source){
     let dest = '';
+    if(!source){
+        return dest;
+    }
     for(let i=0; i<source.length; i++){
         let x = source[i];
         if(x == '<') {
@@ -40,6 +43,8 @@ function cleanHtml(source){
 }
 
 function getTag(source, start, maxLength = 10){
+    if(!source)
+        return '';
     let dest = source.substring(start, start + maxLength+1);
     let end = dest.indexOf('>');
     if(end != -1){
