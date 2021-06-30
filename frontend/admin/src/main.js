@@ -17,4 +17,4 @@ import 'bootstrap/dist/css/bootstrap-utilities.css'
 
 const app = createApp(App)
 // app.component('ProgressSpinner', ProgressSpinner)
-app.use(store).use(router).use(PrimeVue).use(ToastService).mount('#app');
+app.use(store).use(router).use(PrimeVue, {ripple: true}).use(ToastService).mount('#app');

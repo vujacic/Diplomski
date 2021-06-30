@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Content from '../views/Content'
 import ContentList from "../components/ContentList";
+import Menu from "../views/Menu";
+import MenuCreate from "../views/MenuCreate";
 
 const routes = [
   {
@@ -29,8 +31,18 @@ const routes = [
   },
   {
     path: '/content-list',
-    name: 'Content List',
+    name: 'ContentList',
     component: ContentList
+  },
+  {
+    path: '/menu/:slug',
+    name: 'Menu',
+    component: Menu
+  },
+  {
+    path: '/menu',
+    name: 'MenuList',
+    component: MenuCreate
   }
 ]
 
