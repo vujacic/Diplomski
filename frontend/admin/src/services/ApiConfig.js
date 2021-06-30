@@ -16,8 +16,12 @@ ax.interceptors.request.use(request => {
 })
 
 ax.interceptors.response.use(response => {
-    store.commit('loadFalse');
-    return response;
-})
+        store.commit('loadFalse');
+        return response;
+    },
+    error => {
+        store.commit('loadFalse');
+        return Promise.reject(error);
+    })
 
 export default ax;
