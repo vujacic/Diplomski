@@ -8,8 +8,8 @@
                    :rowsPerPageOptions="[10,20,30]">
           <Column>
             <template #body="item">
-              <Button icon="pi pi-pencil" class="p-button-rounded p-button-success me-2" @click="editPage(item.data)" />
-              <Button icon="pi pi-trash" class="p-button-rounded p-button-warning" @click="confirmDelete(item.data)" />
+              <Button icon="pi pi-pencil" v-tp.bottom="'Edit post'" class="p-button-rounded p-button-success me-2" @click="editPage(item.data)" />
+              <Button icon="pi pi-trash" v-tp.bottom="'Delete post'" class="p-button-rounded p-button-warning" @click="confirmDelete(item.data)" />
             </template>
           </Column>
           <Column field="title" header="Title" :sortable="true"></Column>
@@ -40,6 +40,7 @@ import ContentService from "../services/ContentService";
 import convertFilters from "../helpers/convertFilters";
 import Button from "primevue/button"
 import Dialog from "primevue/dialog"
+import Tooltip from "primevue/tooltip";
 
 export default {
   name: "ContentList",
@@ -48,6 +49,9 @@ export default {
     Column,
     Button,
     Dialog
+  },
+  directives:{
+    tp: Tooltip
   },
   data(){
     return {
@@ -77,6 +81,7 @@ export default {
       this.loadLazyData();
     },
     loadLazyData(){
+      this.filter.type="post";
       ContentService.getPagedContent(this.filter)
           .then(response =>{
             this.list = response.data.list;

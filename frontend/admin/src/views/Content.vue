@@ -76,7 +76,8 @@
     <br>
     <div class="row">
       <div class="offset-11 col-1">
-      <Button class="float-end" @click="saveContent()">Save</Button>
+      <Button class="float-end" v-if="!create" @click="saveContent()">Save</Button>
+        <Button class="float-end" v-if="create" @click="createContent()">Create</Button>
       </div>
     </div>
 
@@ -104,37 +105,113 @@ export default {
   },
   data() {
     return {
-      value: {},
+      value: {
+
+      },
       show: true,
       html: '',
-      btnHtml: 'Html'
+      btnHtml: 'Html',
+      create: false
     }
   },
   mounted(){
-    service.getContent(this.$route.params.slug)
-    .then(response => (this.value = response.data))
-    .catch(error => this.$toast.add({
-      severity: 'error', summary: 'Error',
-      detail: error.toString(), life: 3000
-    }));
+    if(this.$route.params.slug) {
+      service.getContent(this.$route.params.slug)
+          .then(response => (this.value = response.data))
+          .catch(error => this.$toast.add({
+            severity: 'error', summary: 'Error',
+            detail: error.toString(), life: 3000
+          }));
+    } else{
+      this.create = true;
+    }
   },
   methods:{
-    saveContent: function (){
+    saveContent: async function (){
       if(this.show === false){
         this.value.body = parseHtml.cleanHtml(this.html);
       }
+      if(!await this.validate()){
+        return;
+      }
       service.putContent(this.$route.params.slug, this.value)
-          .then(response => {
+          .then(() => {
             this.$toast.add({
               severity: 'success', summary: 'Post Saved',
               detail: 'The post has been saved', life: 3000
             });
-            console.log(response);
+            //console.log(response);
           })
-      .catch(er => this.$toast.add({
-        severity: 'error', summary: 'Error',
-        detail: er.toString(), life: 3000
-      }));
+          .catch(er => this.$toast.add({
+            severity: 'error', summary: 'Error',
+            detail: er.toString(), life: 3000
+          }));
+    },
+    createContent: async function (){
+      if(this.show === false){
+        this.value.body = parseHtml.cleanHtml(this.html);
+      }
+      if(!await this.validate()){
+        return;
+      }
+      this.value.userId = "kad ga budem imao";
+      this.value.status = "published";
+      this.value.type = "post";
+      this.value.date = new Date().toISOString();
+      this.value.modified = new Date().toISOString();
+      service.postContent(this.value)
+          .then(response => {
+            this.$toast.add({
+              severity: 'success', summary: 'Post Created',
+              detail: 'The post has been created', life: 3000
+            });
+            this.create = false;
+            this.$router.replace({path: `/content/${response.data._key}`})
+            this.value._key = response.data._key;
+            this.value._rev = response.data._rev;
+          })
+          .catch(er => this.$toast.add({
+            severity: 'error', summary: 'Error',
+            detail: er.toString(), life: 3000
+          }));
+    },
+    async validate(){
+      if(!this.value.title){
+        this.$toast.add({
+          severity: 'error', summary: 'Title invalid',
+          detail: 'Must have a title', life: 3000
+        });
+        return false;
+      }
+      if(!this.value.name){
+        this.$toast.add({
+          severity: 'error', summary: 'Slug invalid',
+          detail: 'Must have a slug', life: 3000
+        });
+        return false;
+      }
+      const res = await service.getPagedContent({type: "post", page: 0, limit: 10,
+        order: "asc", sort: "_key", name: this.value.name})
+          .catch(er => this.$toast.add({
+            severity: 'error', summary: 'Error',
+            detail: er.toString(), life: 3000
+          }));
+      const list = res?.data?.list;
+      // console.log(res);
+      if(list && list.length > 1){
+        this.$toast.add({
+          severity: 'error', summary: 'Slug',
+          detail: 'Slug already exists', life: 3000
+        });
+        return false;
+      } else if(list && list.length == 1 && list[0]._key != this.value._key){
+        this.$toast.add({
+          severity: 'error', summary: 'Slug',
+          detail: 'Slug already exists', life: 3000
+        });
+        return false;
+      }
+      return true;
     },
     handleHtml: function (){
       if(this.show === true){
@@ -149,10 +226,12 @@ export default {
   },
   directives: {
     tp: Tooltip
-  }
+  },
 }
 </script>
 
 <style scoped>
-
+#app .p-editor-container{
+  text-align: left;
+}
 </style>
