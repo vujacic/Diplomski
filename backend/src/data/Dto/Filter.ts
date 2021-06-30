@@ -14,3 +14,5 @@ export interface Arango{
     _rev: string;
     _id: string;
 }
+
+

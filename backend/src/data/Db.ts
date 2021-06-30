@@ -10,7 +10,7 @@ import * as dbconfig from "../dbconfig.json";
 export const Db: Database = new Database({
     url: dbconfig.host,
     databaseName: dbconfig.name,
-    auth: {username: dbconfig.user, password: dbconfig.password}
+    auth: {username: dbconfig.user, password: dbconfig.password},
 });
 
 //     constructor() {

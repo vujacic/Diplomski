@@ -1,7 +1,7 @@
 import {Db} from "./Db";
 import {ContentDto, ContentFilter} from "./Dto/ContentDto";
 import {aql} from "arangojs";
-import {getFilter} from "./Helpers/FilterParser";
+import {getFilter, parseContentFilter} from "./Helpers/FilterParser";
 
 export class ContentService{
     content = Db.collection('content');
@@ -29,15 +29,29 @@ export class ContentService{
     }
 
     async getList(filter: ContentFilter) {
+            parseContentFilter(filter);
+            // const filters: any = [];
+            // if(filter.title) filters.push(aql`filter c.title like "%${filter.title}%"`);
+            // if(filter.type) filters.push(aql `filter c.type like "%${filter.type}%"`);
             let paging = getFilter(filter);
             let res = await Db.query(aql`
                 for c in ${this.content}
+                filter
+                (${filter.title} == "" or like(c.title, CONCAT('%',${filter.title},'%'), true))
+                and (${filter.type} == "" or c.type == ${filter.type})
+                and (${filter.status} == "" or c.status == ${filter.status})
+                and (${filter.name} == "" or c.name == ${filter.name})
                 sort c.${filter.sort} ${filter.order}
                 limit ${paging.page}, ${paging.limit}
                 return c
                 `);
             let cursor = await Db.query(aql`
                 for c in ${this.content}
+                filter
+                (${filter.title} == "" or like(c.title, CONCAT('%',${filter.title},'%'), true))
+                and (${filter.type} == "" or c.type == ${filter.type})
+                and (${filter.status} == "" or c.status == ${filter.status})
+                and (${filter.name} == "" or c.name == ${filter.name})
                 collect with count into length
                 return length
             `);
