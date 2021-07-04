@@ -64,8 +64,8 @@ import Panel from 'primevue/panel'
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import AutoComplete from 'primevue/autocomplete'
-import service from "../services/ContentService";
 import { v4 as uuidv4 } from 'uuid';
+import {contentService} from "../services/Services";
 
 
 export default {
@@ -108,7 +108,7 @@ export default {
         status: "published",
         type: "post"
       }
-      service.getPagedContent(params)
+      contentService.getPagedContent(params)
           .then(response =>{
             this.filteredPages = response.data.list;
           })
@@ -158,7 +158,7 @@ export default {
         body: this.menu.body,
         modified: new Date().toISOString()
       };
-      service.putContent(cont._key, cont)
+      contentService.putContent(cont._key, cont)
         .then(() => {
           this.$toast.add({
             severity: 'success', summary: 'Update',
@@ -174,7 +174,7 @@ export default {
   },
   mounted(){
     if(this.$route.params.slug) {
-      service.getContent(this.$route.params.slug)
+      contentService.getContent(this.$route.params.slug)
           .then(response => (this.menu = response.data))
           .catch(error => this.$toast.add({
             severity: 'error', summary: 'Error',

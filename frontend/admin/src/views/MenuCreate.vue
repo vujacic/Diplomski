@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import service from "../services/ContentService";
+import {contentService} from "../services/Services";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
@@ -94,7 +94,7 @@ export default {
   },
   methods:{
     loadMenu(){
-      service.getPagedContent(this.filter)
+      contentService.getPagedContent(this.filter)
           .then(response =>{
             this.list = [...response.data.list];
           })
@@ -115,7 +115,7 @@ export default {
         date: new Date(Date.now()).toISOString(),
         modified: new Date(Date.now()).toISOString(),
       };
-      service.postContent(menu)
+      contentService.postContent(menu)
       .then(() =>{
         this.cancelEdit();
         this.loadMenu();
@@ -138,7 +138,7 @@ export default {
         modified: new Date(Date.now()).toISOString(),
         title: this.menuItem.title
       };
-      service.putContent(menu._key, menu)
+      contentService.putContent(menu._key, menu)
       .then(()=>{
         this.cancelEdit();
         this.loadMenu();
@@ -166,12 +166,15 @@ export default {
       this.deleteItem = page;
     },
     deleteReally() {
-      service.deleteContent(this.deleteItem._key)
+      contentService.deleteContent(this.deleteItem._key)
           .then(() => {
             this.$toast.add({
               severity: 'success', summary: 'Menu deleted',
               detail: `Menu "${this.deleteItem.title}" has been deleted`, life: 3000
             });
+            if(this.menuItem?._key == this.deleteItem._key){
+              this.cancelEdit();
+            }
             this.deleteItem = null;
             this.deleteDialog = false;
             this.loadMenu();

@@ -36,7 +36,8 @@
 <script>
 import DataTable from 'primevue/datatable'
 import Column from "primevue/column";
-import ContentService from "../services/ContentService";
+import {contentService} from  "../services/Services"
+
 import convertFilters from "../helpers/convertFilters";
 import Button from "primevue/button"
 import Dialog from "primevue/dialog"
@@ -82,7 +83,7 @@ export default {
     },
     loadLazyData(){
       this.filter.type="post";
-      ContentService.getPagedContent(this.filter)
+      contentService.getPagedContent(this.filter)
           .then(response =>{
             this.list = response.data.list;
             this.list.forEach((x) => {
@@ -103,7 +104,7 @@ export default {
       this.deleteItem = page;
     },
     deleteReally() {
-      ContentService.deleteContent(this.deleteItem._key)
+      contentService.deleteContent(this.deleteItem._key)
           .then(() => {
             this.$toast.add({
               severity: 'success', summary: 'Post deleted',

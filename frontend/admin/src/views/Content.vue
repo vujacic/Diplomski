@@ -87,9 +87,8 @@
 
 <script>
 import Editor from 'primevue/editor'
-// import axios from 'axios'
 import Button from 'primevue/button'
-import service from '../services/ContentService'
+import {contentService} from "../services/Services";
 import Tooltip from 'primevue/tooltip'
 import Textarea from 'primevue/textarea'
 import parseHtml from '../helpers/parseHtml'
@@ -116,7 +115,7 @@ export default {
   },
   mounted(){
     if(this.$route.params.slug) {
-      service.getContent(this.$route.params.slug)
+      contentService.getContent(this.$route.params.slug)
           .then(response => (this.value = response.data))
           .catch(error => this.$toast.add({
             severity: 'error', summary: 'Error',
@@ -134,7 +133,7 @@ export default {
       if(!await this.validate()){
         return;
       }
-      service.putContent(this.$route.params.slug, this.value)
+      contentService.putContent(this.$route.params.slug, this.value)
           .then(() => {
             this.$toast.add({
               severity: 'success', summary: 'Post Saved',
@@ -159,7 +158,7 @@ export default {
       this.value.type = "post";
       this.value.date = new Date().toISOString();
       this.value.modified = new Date().toISOString();
-      service.postContent(this.value)
+      contentService.postContent(this.value)
           .then(response => {
             this.$toast.add({
               severity: 'success', summary: 'Post Created',
@@ -190,7 +189,7 @@ export default {
         });
         return false;
       }
-      const res = await service.getPagedContent({type: "post", page: 0, limit: 10,
+      const res = await contentService.getPagedContent({type: "post", page: 0, limit: 10,
         order: "asc", sort: "_key", name: this.value.name})
           .catch(er => this.$toast.add({
             severity: 'error', summary: 'Error',
