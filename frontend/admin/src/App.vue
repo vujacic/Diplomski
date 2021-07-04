@@ -19,7 +19,7 @@
           </PanelMenu>
         </div>
         <div class="col-10">
-          <router-view/>
+          <router-view :key="$route.path"/>
         </div>
       </div>
 

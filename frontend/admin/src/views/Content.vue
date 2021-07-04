@@ -114,18 +114,22 @@ export default {
     }
   },
   mounted(){
-    if(this.$route.params.slug) {
-      contentService.getContent(this.$route.params.slug)
-          .then(response => (this.value = response.data))
-          .catch(error => this.$toast.add({
-            severity: 'error', summary: 'Error',
-            detail: error.toString(), life: 3000
-          }));
-    } else{
-      this.create = true;
-    }
+    this.pageLoad();
   },
   methods:{
+    pageLoad() {
+      if(this.$route.params.slug) {
+        contentService.getContent(this.$route.params.slug)
+            .then(response => (this.value = response.data))
+            .catch(error => this.$toast.add({
+              severity: 'error', summary: 'Error',
+              detail: error.toString(), life: 3000
+            }));
+      } else{
+        this.value = {}
+        this.create = true;
+      }
+    },
     saveContent: async function (){
       if(this.show === false){
         this.value.body = parseHtml.cleanHtml(this.html);
