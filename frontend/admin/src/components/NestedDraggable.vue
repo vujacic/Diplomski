@@ -8,6 +8,8 @@
       @start="drag = true"
       @end="drag = false"
       invertSwap = "true"
+      filter = ".p-inputtext-sm, .p-button-danger"
+      :preventOnFilter=filter
   >
     <template #item="{ element }">
       <li>
@@ -28,7 +30,7 @@
         </accordion-tab>
         </Accordion>
 <!--        <p>{{ element.name }}</p>-->
-        <nested-draggable :list="element.menu" />
+        <nested-draggable v-model="element.menu" />
       </li>
     </template>
   </draggable>
@@ -58,18 +60,13 @@ export default {
   data() {
     return{
       drag: false,
+      filter: false
     }
   },
   computed: {
     dragOptions() {
       return {
-        animation: 200,
-        group: "description",
-        disabled: false,
-        ghostClass: "ghost",
-        fallbackOnBody: true,
-        invertSwap: true,
-        swapThreshold: 0.65
+        filter: ".p-inputtext-sm"
       };
     }
   },

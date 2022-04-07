@@ -4,7 +4,9 @@ import NestedArrays from '../helpers/nestedArrays'
 export default createStore({
   state: {
     loading: false,
-    menu: {}
+    menu: {
+      body: []
+    }
   },
   mutations: {
     loadTrue(state){

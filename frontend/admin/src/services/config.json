@@ -1,3 +1,4 @@
 {
+  "api_url1": "https://api.diplomskicms.duckdns.org:35001/api/",
   "api_url": "http://localhost:3000/api/"
 }

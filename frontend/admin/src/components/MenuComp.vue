@@ -38,7 +38,7 @@
         </template>
         <div class="row back">
           <div class="col">
-            <nested-draggable :menu="menu.body"/>
+            <nested-draggable v-model="menu.body"/>
           </div>
         </div>
       </panel>
