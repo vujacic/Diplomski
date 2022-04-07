@@ -1,3 +1,4 @@
 # Diplomski
 
-CMS sa node.js backend-om i ArangoDB bazom.
+CMS sa node.js api backend-om i ArangoDB bazom.
+Frontend admin deo. Sajt i templejti - node.s sa ejs templates
