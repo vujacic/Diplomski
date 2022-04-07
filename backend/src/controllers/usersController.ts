@@ -50,6 +50,16 @@ router.put('/:id', function(req, res, next) {
         });
 });
 
+router.post('/optons', function(req, res, next) {
+    const newUser = req.body;
+    const id = req.params['id'];
+    userService.update(id, newUser)
+        .then((res1) =>
+            res.send(res1))
+        .catch((error)=> {
+            next(error);
+        });
+});
 
 
 //module.exports = router;

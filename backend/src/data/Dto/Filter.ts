@@ -11,8 +11,8 @@ export interface Count{
 
 export interface Arango{
     _key: string;
-    _rev: string;
-    _id: string;
+    _rev?: string;
+    _id?: string;
 }
 
 

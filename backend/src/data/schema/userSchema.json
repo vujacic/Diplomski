@@ -1,0 +1,24 @@
+{
+  "rule": {
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "email": {
+        "type": "string"
+      },
+      "password": {
+        "type": "string"
+      },
+      "status": {
+        "type": "number"
+      }
+    },
+    "additionalProperties": {
+      "type": "string"
+    },
+    "required": ["name", "email", "password", "status"]
+  },
+  "level": "moderate",
+  "message": "Schema validation failed."
+}

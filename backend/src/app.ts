@@ -19,7 +19,7 @@ var app = express();
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors({origin: ['http://localhost:8080']}));
+app.use(cors({origin: ['http://localhost:8080', 'http://localhost:3002']}));
 // app.use(function(req,res,next){setTimeout(next,3000)});
 // app.use(cookieParser());
 // app.use(sassMiddleware({
@@ -32,7 +32,7 @@ app.use(cors({origin: ['http://localhost:8080']}));
 
 // app.use('/', indexRouter);
 app.use('/api/users', usersController);
-app.use('/api/content', contentController)
+app.use('/api/content', contentController);
 
 app.use(function(err, req, res, next){
     // whatever you want here, feel free to populate
