@@ -1,4 +1,4 @@
-<template>
+<template v-if="!loading">
   <div class="row">
     <div class="col-3">
       <h3>Menu Items</h3>
@@ -38,7 +38,7 @@
         </template>
         <div class="row back">
           <div class="col">
-            <nested-draggable v-model="menu.body"/>
+            <nested-draggable :modelValue="menu.body"/>
           </div>
         </div>
       </panel>
@@ -94,6 +94,11 @@ export default {
       },
       set(value){
         this.$store.commit('setList', value);
+      }
+    },
+    loading: {
+      get(){
+        return this.$store.state.loading;
       }
     }
   },
@@ -174,8 +179,9 @@ export default {
   },
   mounted(){
     if(this.$route.params.slug) {
+      this.menu = {body: []} ;
       contentService.getContent(this.$route.params.slug)
-          .then(response => (this.menu = response.data))
+          .then(response => {this.menu = response.data})
           .catch(error => this.$toast.add({
             severity: 'error', summary: 'Error',
             detail: error.toString(), life: 3000

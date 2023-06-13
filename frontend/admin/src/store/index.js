@@ -23,6 +23,9 @@ export default createStore({
     },
     deleteFromList(state, value){
       NestedArrays.spliceFromNested(state.menu.body, value);
+    },
+    updateArray(state, valueAndUId){
+      NestedArrays.updateNested(state.menu.body, valueAndUId.uuid, valueAndUId.value)
     }
   },
   actions: {

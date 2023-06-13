@@ -21,9 +21,9 @@
           <div class="row">
             <div class="col">
               <label class="float-start">Link label</label>
-              <InputText  class="p-inputtext-sm w-100 mb-2" type="text" v-model="element.title"  placeholder="Title" />
+              <InputText class="p-inputtext-sm w-100 mb-2" type="text" :modelValue="element.title" @input="updateValue($event.target.value, element.uuid)"  placeholder="Title" />
               <label class="float-start">Url</label>
-              <InputText :disabled="element._key > 0"  class="p-inputtext-sm w-100 mb-2" type="text" v-model="element.name"  placeholder="Title" />
+              <InputText :disabled="element._key > 0"  class="p-inputtext-sm w-100 mb-2" type="text" :modelValue="element.name"  placeholder="Title" />
               <Button class="p-button-danger float-start" @click="removeLink(element.uuid)">Remove</Button>
             </div>
           </div>
@@ -73,6 +73,9 @@ export default {
   methods: {
     removeLink(uuid){
       this.$store.commit('deleteFromList', uuid);
+    },
+    updateValue(value, uuid){
+      this.$store.commit('updateArray', {uuid: uuid, value: value})
     }
   }
 };
