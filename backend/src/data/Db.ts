@@ -7,11 +7,7 @@ import * as dbconfig from "../dbconfig.json";
 //const dbconfig = JSON.parse(fs.readFileSync('./dbconfig.json').toString());
 
 // export class Db {
-export const Db: Database = new Database({
-    url: dbconfig.host,
-    databaseName: dbconfig.name,
-    auth: {username: dbconfig.user, password: dbconfig.password},
-});
+export const Db: Database = new Database(dbconfig);
 
 //     constructor() {
 //

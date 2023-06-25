@@ -15,4 +15,9 @@ export interface Arango{
     _id?: string;
 }
 
+export interface Edge extends Arango{
+    _from: string;
+    _to: string;
+}
+
 

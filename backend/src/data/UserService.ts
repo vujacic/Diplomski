@@ -4,7 +4,9 @@ import {aql} from "arangojs";
 import {getFilter} from "./Helpers/FilterParser";
 
 export class UserService{
-    users = Db.collection('users');
+    users = Db.collection('user');
+    userRoles = Db.collection('userRole');
+    roles = Db.collection('role');
     constructor() {
     }
 
@@ -21,6 +23,15 @@ export class UserService{
                 return u
                 `);
             return res.next();
+    }
+
+    async getByEmail(email: string){
+        let res = await Db.query(aql`
+                for u in ${this.users}
+                filter u.email == ${email}
+                return u
+                `);
+        return res.next();
     }
 
     async update(id: string, user: UserDto){
@@ -44,5 +55,21 @@ export class UserService{
             `);
             let count1 = await cursor.next();
             return {"count": count1, "list": await res.all()};
+    }
+
+    async saveRole(userId: string, roleId: string) {
+
+        let roleEdges = await this.userRoles.outEdges(userId);
+
+        await this.userRoles.removeAll(roleEdges.edges.map(x => x._key));
+
+        await this.userRoles.save({
+            _from: userId,
+            _to: roleId
+        })
+    }
+
+    async getRoleByUserId(userId: string){
+        return (await this.userRoles.outEdges(userId)).edges.map(x => x._to.split('/')[1]);
     }
 }

@@ -6,13 +6,15 @@
 import express from 'express';
 import path from 'path';
 // import cookieParser from "cookie-parser";
-import logger from 'morgan'
+import logger from 'morgan';
 
 // var indexRouter = require('./controllers/index');
 //var usersRouter = require('./controllers/users');
 import usersController from './controllers/usersController';
 import contentController from "./controllers/contentController";
-import cors from 'cors'
+import authController from "./controllers/authController";
+import cors from 'cors';
+import {Db} from "./data/Db";
 
 var app = express();
 
@@ -20,6 +22,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({origin: ['http://localhost:8080', 'http://localhost:3002']}));
+
 // app.use(function(req,res,next){setTimeout(next,3000)});
 // app.use(cookieParser());
 // app.use(sassMiddleware({
@@ -31,6 +34,7 @@ app.use(cors({origin: ['http://localhost:8080', 'http://localhost:3002']}));
 //app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/', indexRouter);
+app.use('/api/auth', authController)
 app.use('/api/users', usersController);
 app.use('/api/content', contentController);
 

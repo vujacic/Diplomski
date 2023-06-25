@@ -1,4 +1,5 @@
-<template v-if="!loading">
+<template>
+  <h1>Edit menu</h1>
   <div class="row">
     <div class="col-3">
       <h3>Menu Items</h3>
@@ -38,7 +39,7 @@
         </template>
         <div class="row back">
           <div class="col">
-            <nested-draggable :modelValue="menu.body"/>
+            <nested-draggable v-model="menu.body"/>
           </div>
         </div>
       </panel>
@@ -94,11 +95,6 @@ export default {
       },
       set(value){
         this.$store.commit('setList', value);
-      }
-    },
-    loading: {
-      get(){
-        return this.$store.state.loading;
       }
     }
   },

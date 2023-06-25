@@ -1,11 +1,13 @@
-
-
-// var express = require('express');
 import express from 'express';
 import {UserService} from "../data/UserService";
 import {UserDto, UserFilter} from "../data/Dto/UserDto";
+import {AuthService} from "../data/AuthService";
+
 const router = express.Router();
 const userService = new UserService();
+const authService = new AuthService();
+
+router.use('/', authService.authorize(["admin"]));
 
 
 router.get('/', function(req, res, next) {

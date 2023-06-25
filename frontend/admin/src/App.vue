@@ -9,7 +9,7 @@
 
 
     <div class="container-fluid">
-      <div class="row">
+      <div class="row" v-if="$route.path != '/login'">
         <div class="col col-md-2">
 <!--          <PanelMenu :model="items"></PanelMenu>-->
           <PanelMenu :model="items" @click="highlight($event)">
@@ -19,9 +19,25 @@
           </PanelMenu>
         </div>
         <div class="col-10">
-          <router-view :key="$route.path"/>
+          <Card class="p-x-1">
+            <template #content>
+              <router-view :key="$route.path"/>
+            </template>
+          </Card>
         </div>
       </div>
+
+      <div v-else class="row vh-100 align-items-center" >
+        <Card class="offset-sm-4 col-sm-4 offset-xxl-5 col-xxl-2 ">
+          <template #header>
+            <h1>Login</h1>
+          </template>
+          <template #content>
+            <router-view :key="$route.path"/>
+          </template>
+        </Card>
+      </div>
+
 
     </div>
     <ProgressSpinner strokeWidth='5' v-if="loading" class="position-fixed top-50 start-50 translate-middle" animationDuration='5s'></ProgressSpinner>
@@ -32,12 +48,14 @@
 import ProgressSpinner from "primevue/progressspinner";
 import Toast from "primevue/toast";
 import PanelMenu from "primevue/panelmenu"
+import Card from "primevue/card";
 export default {
   name: 'App',
   components: {
     ProgressSpinner,
     Toast,
-    PanelMenu
+    PanelMenu,
+    Card
   },
   data() {
     return {
@@ -79,7 +97,24 @@ export default {
         // },
         {
           label: 'About',
-          to: '/about'
+          to: '/about',
+        },
+        {
+          label: 'Users',
+          class: 'customLogout',
+          items: [
+            {
+              label: 'Manage users',
+              // to: '/users'
+            },
+            {
+              label: 'Logout',
+              command: () => {
+                sessionStorage.removeItem('token');
+                location.reload();
+              }
+            }
+          ]
         }
       ],
       lastMenuItem: null
@@ -147,5 +182,8 @@ body{
 }
 .router-link-exact-active {
   color: #42b983!important;
+}
+.customLogout ul li:last-child a span{
+  color: red !important;
 }
 </style>

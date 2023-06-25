@@ -3,8 +3,8 @@
   <h1>List of posts</h1>
     <div class="row">
       <div class="col-12">
-        <DataTable :value="list" :lazy="true" :paginator="true" :rows="lazyParams.rows"
-                   @page="onPage($event)" @sort="onSort($event)" :totalRecords="count"
+        <DataTable :value="list" :lazy="true" :paginator="true" :rows="lazyParams.rows" showGridlines
+                   @page="onPage($event)" @sort="onSort($event)" :totalRecords="count" class="p-datatable-sm"
                    :rowsPerPageOptions="[10,20,30]">
           <Column>
             <template #body="item">

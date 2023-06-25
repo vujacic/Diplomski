@@ -1,10 +1,11 @@
 <template>
+  <h1>Manage menus</h1>
   <div>
 
     <div class="row">
       <div class="col-6">
         <h3>Menus</h3>
-        <DataTable :value="list" :paginator="true" :rows="10">
+        <DataTable :value="list" :paginator="true" :rows="10" showGridlines class="p-datatable-sm">
           <Column>
             <template #body="item">
               <Button icon="pi pi-external-link" v-tp.bottom="'Edit menu items'" class="p-button-rounded p-button-info me-2" @click="menuItemEdit(item.data)" />

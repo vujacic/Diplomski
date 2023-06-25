@@ -2,10 +2,13 @@ import express from 'express';
 import {ContentService} from "../data/ContentService";
 import {UserDto} from "../data/Dto/UserDto";
 import {ContentDto} from "../data/Dto/ContentDto";
+import {AuthService} from "../data/AuthService";
+
+const authService = new AuthService();
 const router = express.Router();
-
-
 const contentService = new ContentService();
+
+router.use('/', authService.authorize(["admin", "editor"], ["POST", "PUT", "DELETE"]));
 
 router.get('/', function(req, res, next) {
     const filter = req.query as any;

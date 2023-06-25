@@ -1,4 +1,6 @@
 <template>
+  <h1 v-if="create">Create Post</h1>
+  <h1 v-else>Edit Post</h1>
   <div>
     <div class="row">
       <div class="col-6">

@@ -4,6 +4,7 @@ import Content from '../views/Content'
 import ContentList from "../components/ContentList";
 import Menu from "../views/Menu";
 import MenuCreate from "../views/MenuCreate";
+import Login from "../views/Login";
 
 const routes = [
   {
@@ -42,13 +43,25 @@ const routes = [
   {
     path: '/menu',
     name: 'MenuList',
-    component: MenuCreate
+    component: MenuCreate,
+    title: 'Menus'
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach( (to) => {
+  if(!sessionStorage.getItem('token') && to.name != 'Login'){
+    return '/login';
+  }
 })
 
 export default router

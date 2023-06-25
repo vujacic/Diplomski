@@ -1,6 +1,8 @@
 {
-    "name": "diplomski",
-    "user": "root",
-    "password": "root",
-    "host": "http://localhost:8529"
+    "url": "http://localhost:8529",
+    "databaseName": "diplomski",
+    "auth": {
+        "username": "root",
+        "password": "root"
+    }
 }
