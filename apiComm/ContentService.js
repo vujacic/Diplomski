@@ -6,7 +6,7 @@ module.exports = (ax) =>{
     }
 
     function getPagedContent(params){
-        return ax.get('content/',{params: params});
+        return ax.get('content',{params: params});
     }
 
     function putContent(id, content){

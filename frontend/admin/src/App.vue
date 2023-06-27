@@ -66,16 +66,34 @@ export default {
           to: '/'
         },
         {
+          label: 'Posts',
+          // to: '/content-list',
+          items: [
+            {
+              label: 'View Posts',
+              to: '/list/post'
+            },
+            {
+              label: 'New Post',
+              to: '/content/post'
+            },
+            {
+              label: 'Categories',
+              to: '/categories'
+            }
+          ]
+        },
+        {
           label: 'Pages',
           // to: '/content-list',
           items: [
             {
-              label: 'List',
-              to: '/content-list'
+              label: 'View Pages',
+              to: '/list/page'
             },
             {
-              label: 'Post New',
-              to: '/content'
+              label: 'New Page',
+              to: '/content/page'
             }
           ]
         },

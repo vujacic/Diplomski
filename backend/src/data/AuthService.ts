@@ -27,13 +27,18 @@ export class AuthService{
             let shouldAuthorize = this.shouldAuthorizeMethod(req, method);
             let status = 403;
             if(shouldAuthorize) {
-                let decoded = this.decodeToken(req.headers['authorization']);
-                let currDate = new Date().getTime();
-                if(decoded.user && decoded.exp && decoded.exp * 1000 > currDate){
-                    if(this.authorizeRole(roles, decoded.role)){
-                        return next();
+                try{
+                    let decoded = this.decodeToken(req.headers['authorization']);
+                    if(decoded.user){
+                        res.locals.user = decoded.user;
+                        if(this.authorizeRole(roles, decoded.role)){
+                            res.locals.role = decoded.role;
+                            return next();
+                        }
+                    } else {
+                        status = 401;
                     }
-                } else {
+                } catch {
                     status = 401;
                 }
                 res.status(status);

@@ -1,7 +1,8 @@
 <template>
-  <h1 v-if="create">Create Post</h1>
-  <h1 v-else>Edit Post</h1>
-  <div>
+  <h1 v-if="create">New {{ type }}</h1>
+  <h1 v-else>Edit {{ type }}</h1>
+  <div class="row">
+  <div class="col-md-9">
     <div class="row">
       <div class="col-6">
         <label class="float-start">Title</label>
@@ -84,7 +85,10 @@
     </div>
 
   </div>
-
+  <div class="col-md-3">
+    <category-checkbox v-model="value.categories"></category-checkbox>
+  </div>
+  </div>
 </template>
 
 <script>
@@ -95,10 +99,12 @@ import Tooltip from 'primevue/tooltip'
 import Textarea from 'primevue/textarea'
 import parseHtml from '../helpers/parseHtml'
 import InputText from 'primevue/inputtext'
+import CategoryCheckbox from "../components/CategoryCheckbox";
 
 export default {
   name: 'Content',
   components: {
+    CategoryCheckbox,
     Editor,
     Button,
     Textarea,
@@ -107,13 +113,22 @@ export default {
   data() {
     return {
       value: {
-
+        categories: []
       },
       show: true,
       html: '',
       btnHtml: 'Html',
-      create: false
+      create: false,
+      type: ''
     }
+  },
+  created() {
+    this.$watch(
+        () => this.$route.params,
+        (/*toParams, previousParams*/) =>{
+          this.pageLoad()
+        }
+    )
   },
   mounted(){
     this.pageLoad();
@@ -122,7 +137,10 @@ export default {
     pageLoad() {
       if(this.$route.params.slug) {
         contentService.getContent(this.$route.params.slug)
-            .then(response => (this.value = response.data))
+            .then(response => {
+              this.value = response.data;
+              this.value.categories = this.value.categories.map(x => x._id);
+            })
             .catch(error => this.$toast.add({
               severity: 'error', summary: 'Error',
               detail: error.toString(), life: 3000
@@ -131,6 +149,7 @@ export default {
         this.value = {}
         this.create = true;
       }
+      this.type = this.$route.params.type;
     },
     saveContent: async function (){
       if(this.show === false){
@@ -146,6 +165,7 @@ export default {
               detail: 'The post has been saved', life: 3000
             });
             //console.log(response);
+            this.pageLoad();
           })
           .catch(er => this.$toast.add({
             severity: 'error', summary: 'Error',
@@ -159,9 +179,8 @@ export default {
       if(!await this.validate()){
         return;
       }
-      this.value.userId = "kad ga budem imao";
       this.value.status = "published";
-      this.value.type = "post";
+      this.value.type = this.type;
       this.value.date = new Date().toISOString();
       this.value.modified = new Date().toISOString();
       contentService.postContent(this.value)
@@ -171,7 +190,7 @@ export default {
               detail: 'The post has been created', life: 3000
             });
             this.create = false;
-            this.$router.replace({path: `/content/${response.data._key}`})
+            this.$router.replace({path: `/content/${this.type}/${response.data._key}`})
             this.value._key = response.data._key;
             this.value._rev = response.data._rev;
           })

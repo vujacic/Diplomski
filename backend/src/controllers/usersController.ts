@@ -7,7 +7,7 @@ const router = express.Router();
 const userService = new UserService();
 const authService = new AuthService();
 
-router.use('/', authService.authorize(["admin"]));
+router.use('/', authService.authorize(["admin"], ["POST", "PUT", "DELETE", "GET"]));
 
 
 router.get('/', function(req, res, next) {

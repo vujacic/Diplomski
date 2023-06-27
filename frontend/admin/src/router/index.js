@@ -5,6 +5,7 @@ import ContentList from "../components/ContentList";
 import Menu from "../views/Menu";
 import MenuCreate from "../views/MenuCreate";
 import Login from "../views/Login";
+import Categories from "../views/Categories";
 
 const routes = [
   {
@@ -21,17 +22,17 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/content/:slug',
+    path: '/content/:type/:slug',
     name: 'Content',
     component: Content
   },
   {
-    path: '/content',
+    path: '/content/:type',
     name: 'ContentCreate',
     component: Content
   },
   {
-    path: '/content-list',
+    path: '/list/:type',
     name: 'ContentList',
     component: ContentList
   },
@@ -50,6 +51,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/categories',
+    name: 'Categories',
+    component: Categories
   }
 ]
 

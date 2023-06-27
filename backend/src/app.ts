@@ -13,8 +13,8 @@ import logger from 'morgan';
 import usersController from './controllers/usersController';
 import contentController from "./controllers/contentController";
 import authController from "./controllers/authController";
+import termController from "./controllers/termController";
 import cors from 'cors';
-import {Db} from "./data/Db";
 
 var app = express();
 
@@ -34,9 +34,12 @@ app.use(cors({origin: ['http://localhost:8080', 'http://localhost:3002']}));
 //app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/', indexRouter);
+app.use('/api/term', termController);
 app.use('/api/auth', authController)
 app.use('/api/users', usersController);
 app.use('/api/content', contentController);
+
+
 
 app.use(function(err, req, res, next){
     // whatever you want here, feel free to populate

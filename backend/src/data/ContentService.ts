@@ -2,29 +2,42 @@ import {Db} from "./Db";
 import {ContentDto, ContentFilter} from "./Dto/ContentDto";
 import {aql} from "arangojs";
 import {getFilter, parseContentFilter} from "./Helpers/FilterParser";
+import {TermService} from "./TermService";
 
 export class ContentService{
     content = Db.collection('content');
+    termEdge = Db.collection('termEdge');
+    termService = new TermService();
+
     constructor() {
     }
 
     async create(content: ContentDto){
-            let res = this.content.save(content);
-            return res;
+        const categories = content.categories;
+        delete content.categories;
+        let res = await this.content.save(content);
+        await this.addRemoveCategoryLinks(res._id, categories);
+        return res;
     }
 
     async get(id: string){
-            let res = await Db.query(aql`
-                for c in ${this.content}
-                filter c._key == ${id}
-                return c
-                `);
-            return await res.next();
+        let res = await Db.query(aql`
+            for c in ${this.content}
+            filter c._key == ${id}
+            return c
+            `);
+
+        let res1 = await res.next();
+        res1.categories = await this.termService.GetAllByContentId(res1._id, "category");
+        return res1;
     }
 
     async update(id: string, content: ContentDto){
-            let res = this.content.update(id, content);
-            return res;
+        const categories = content.categories;
+        delete content.categories;
+        let res = await this.content.update(id, content);
+        await this.addRemoveCategoryLinks(res._id, categories);
+        return res;
 
     }
 
@@ -62,5 +75,21 @@ export class ContentService{
     async delete(id: string){
             let res = this.content.remove(id);
             return res;
+    }
+
+    async addRemoveCategoryLinks(contentId: string, categories?: any[]){
+        const edges = (await this.termEdge.inEdges(contentId)).edges;
+        await this.termEdge.removeAll(edges);
+        let edgeArray: any = [];
+        if(categories){
+            for(let i = 0; i < categories.length; i++){
+                edgeArray.push({
+                    _from: categories[i]/*._id*/,
+                    _to: contentId
+                })
+            }
+            await this.termEdge.saveAll(edgeArray);
+        }
+
     }
 }

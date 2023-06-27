@@ -1,18 +1,16 @@
-import express from 'express';
-import {ContentService} from "../data/ContentService";
-import {UserDto} from "../data/Dto/UserDto";
-import {ContentDto} from "../data/Dto/ContentDto";
 import {AuthService} from "../data/AuthService";
+import {TermService} from "../data/TermService";
+import {TermDto} from "../data/Dto/TermDto";
+import express from "express";
 
 const authService = new AuthService();
+const termService = new TermService();
 const router = express.Router();
-const contentService = new ContentService();
-
-router.use('/', authService.authorize(["admin", "editor"], ["POST", "PUT", "DELETE"]));
+router.use('/', authService.authorize(["admin"], ["POST", "PUT", "DELETE"]));
 
 router.get('/', function(req, res, next) {
     const filter = req.query as any;
-    contentService.getList(filter)
+    termService.getAllByType(filter)
         .then((res1) =>
             res.send(res1))
         .catch((error)=> {
@@ -22,9 +20,9 @@ router.get('/', function(req, res, next) {
 
 router.get('/:id', function(req, res, next) {
     //res.send('respond with a resource');
-    contentService.get(req.params['id'])
+    termService.get(req.params['id'])
         .then((res1) =>{
-           return res.send(res1);
+            return res.send(res1);
         })
         .catch((error)=> {
             next(error);
@@ -32,9 +30,8 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-    const newContent: ContentDto = req.body;
-    newContent.userId = res.locals.user.name;
-    contentService.create(newContent)
+    const newTerm: TermDto = req.body;
+    termService.create(newTerm)
         .then((res1) =>
             res.send(res1))
         .catch((error)=> {
@@ -43,9 +40,9 @@ router.post('/', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res, next) {
-    const newContent = req.body;
+    const newTerm = req.body;
     const id = req.params['id'];
-    contentService.update(id, newContent)
+    termService.update(id, newTerm)
         .then((res1) =>
             res.send(res1))
         .catch((error)=> {
@@ -55,7 +52,7 @@ router.put('/:id', function(req, res, next) {
 
 router.delete('/:id', function(req, res, next) {
     const id = req.params['id'];
-    contentService.delete(id)
+    termService.delete(id)
         .then((res1) =>
             res.send(res1))
         .catch((error)=> {

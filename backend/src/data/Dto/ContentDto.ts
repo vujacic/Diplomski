@@ -13,6 +13,7 @@ export class ContentDto implements Arango{
     mimeType: string;
     date: Date;
     modified: Date;
+    categories?: any[]
 }
 
 export class ContentFilter extends ContentDto implements Filter{

@@ -1,6 +1,6 @@
 <template>
   <div>
-  <h1>List of posts</h1>
+  <h1>All {{type}}s</h1>
     <div class="row">
       <div class="col-12">
         <DataTable :value="list" :lazy="true" :paginator="true" :rows="lazyParams.rows" showGridlines
@@ -67,7 +67,8 @@ export default {
       },
       count: 0,
       deleteDialog: false,
-      deleteItem: null
+      deleteItem: null,
+      type: ''
     }
   },
   methods:{
@@ -82,7 +83,7 @@ export default {
       this.loadLazyData();
     },
     loadLazyData(){
-      this.filter.type="post";
+      this.filter.type=this.type
       contentService.getPagedContent(this.filter)
           .then(response =>{
             this.list = response.data.list;
@@ -97,7 +98,7 @@ export default {
           }));
     },
     editPage(page) {
-      this.$router.push({path: `/content/${page._key}`});
+      this.$router.push({path: `/content/${this.type}/${page._key}`});
     },
     confirmDelete(page){
       this.deleteDialog = true;
@@ -124,7 +125,18 @@ export default {
           })
     }
   },
+  created() {
+    this.$watch(
+        () => this.$route.params,
+        (/*toParams, previousParams*/) =>{
+          this.type = this.$route.params.type;
+          this.lazyParams = convertFilters.filterToLazy(this.filter)
+          this.loadLazyData();
+        }
+    )
+  },
   mounted() {
+    this.type = this.$route.params.type;
     this.lazyParams = convertFilters.filterToLazy(this.filter)
     this.loadLazyData();
   }
