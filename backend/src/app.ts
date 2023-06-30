@@ -21,7 +21,7 @@ var app = express();
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors({origin: ['http://localhost:8080', 'http://localhost:3002']}));
+app.use(cors({origin: ['http://localhost:8080', 'http://localhost:3002', 'https://diplomskicms.duckdns.org','http://diplomskicms.duckdns.org']}));
 
 // app.use(function(req,res,next){setTimeout(next,3000)});
 // app.use(cookieParser());

@@ -20,6 +20,16 @@ router.get('/', function(req, res, next) {
         });
 });
 
+router.get('/getByCategory', function(req, res, next) {
+    const filter = req.query as any;
+    contentService.getAllByCatType(filter)
+        .then((res1) =>
+            res.send(res1))
+        .catch((error)=> {
+            next(error);
+        });
+});
+
 router.get('/:id', function(req, res, next) {
     //res.send('respond with a resource');
     contentService.get(req.params['id'])

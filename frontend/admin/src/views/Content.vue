@@ -85,7 +85,7 @@
     </div>
 
   </div>
-  <div class="col-md-3">
+  <div class="col-md-3" v-if="type == 'post'">
     <category-checkbox v-model="value.categories"></category-checkbox>
   </div>
   </div>

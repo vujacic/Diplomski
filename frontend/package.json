@@ -8,14 +8,16 @@
     "restart": "SET DEBUG=frontend:* & set PORT=3002 & node-dev ./bin/www"
   },
   "dependencies": {
+    "apicomm": "file:../apiComm",
     "axios": "^0.21.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
-    "ejs": "~2.6.1",
+    "ejs": "^2.6.2",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
-    "qs": "^6.10.1"
+    "qs": "^6.10.1",
+    "string-strip-html": "^8.4.0"
   },
   "devDependencies": {
     "node-dev": "^7.0.0"

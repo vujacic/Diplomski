@@ -9,6 +9,10 @@ module.exports = (ax) =>{
         return ax.get('content',{params: params});
     }
 
+    function getByCategory(params){
+        return ax.get('content/getByCategory',{params: params});
+    }
+
     function putContent(id, content){
         return ax.put(`content/${id}`, content);
     }
@@ -26,7 +30,8 @@ module.exports = (ax) =>{
         getPagedContent,
         putContent,
         postContent,
-        deleteContent
+        deleteContent,
+        getByCategory
     }
 }
 

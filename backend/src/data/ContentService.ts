@@ -92,4 +92,31 @@ export class ContentService{
         }
 
     }
+
+    async getAllByCatType(filter){
+        if(!filter.key.includes("term"))
+            filter.key=`term/${filter.key}`
+        let paging = getFilter(filter);
+        let res = await Db.query(aql`
+                for c in ${this.content}
+                    let edges = (for te in ${this.termEdge}
+                    filter c._id == te._to and te._from == ${filter.key}
+                    return te._to)
+                    filter c._id in edges
+                sort c.${filter.sort} ${filter.order}
+                limit ${paging.offset}, ${paging.limit}
+                return c
+                `);
+        let cursor = await Db.query(aql`
+                for c in ${this.content}
+                    let edges = (for te in ${this.termEdge}
+                    filter c._id == te._to and te._from == ${filter.key}
+                    return te._to)
+                filter c._id in edges
+                collect with count into length
+                return length
+            `);
+        let count1 = await cursor.next();
+        return {"count": count1, "list": await res.all()};
+    }
 }
