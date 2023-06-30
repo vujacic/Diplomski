@@ -2,15 +2,15 @@
   <draggable
       class="dragArea"
       tag="ul"
-      :list="menu"
+      :list="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)"
       :group="{ name: 'g1' }"
       item-key="uuid"
       @start="drag = true"
       @end="drag = false"
       invertSwap = "true"
       filter = ".p-inputtext-sm, .p-button-danger"
-      :preventOnFilter=filter
-  >
+      :preventOnFilter=filter>
     <template #item="{ element }">
       <li>
         <Accordion class="col-6">
@@ -44,12 +44,8 @@ import Button from "primevue/button"
 
 export default {
   name: "nested-draggable",
-  props: {
-    menu: {
-      required: false,
-      type: Array
-    }
-  },
+  props: ['modelValue'],
+  emits: ['update:modelValue'],
   components: {
     draggable,
     AccordionTab,
@@ -71,6 +67,14 @@ export default {
     }
   },
   methods: {
+    // value: {
+    //   get(){
+    //     return this.modelValue
+    //   },
+    //   set(value) {
+    //     this.$emit('update:modelValue', value)
+    //   }
+    // },
     removeLink(uuid){
       this.$store.commit('deleteFromList', uuid);
     },
