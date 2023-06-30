@@ -1,0 +1,33 @@
+<ul class="pagination">
+    <%if(count != 0){
+    if(page == 1) {%>
+        <li class="arrow unavailable"><a href="#" onclick="return false;">&laquo;</a></li>
+    <%}else {%>
+    <li class="arrow"><a href="<%=url%>page=<%=page-1%>">&laquo;</a></li>
+    <%}}%>
+
+    <%
+    var beforePrinted = false;
+    var afterPrinted = false;
+    for(var i=1; i<=count; i++){
+
+    if(i == 1) {%>
+        <li class="<%= i==page ? "current" : ""%>" ><a href="<%=url%>page=<%=i%>"><%=i%></a></li>
+    <%} else if(i == count){%>
+        <li class="<%= i==page ? "current" : ""%>"><a href="<%=url%>page=<%=i%>"><%=i%></a></li>
+    <%} else if(i > page - 2 && i < page + 2) {%>
+        <li class="<%= i==page ? "current" : ""%>"><a href="<%=url%>page=<%=i%>"><%=i%></a></li>
+    <%} else if(i < page && !beforePrinted){ beforePrinted = true; %>
+    <li class="unavailable"><a href="">&hellip;</a></li>
+    <%} else if (i > page && !afterPrinted) {afterPrinted = true; %>
+    <li class="unavailable"><a href="">&hellip;</a></li>
+    <%}%>
+    <%}%>
+
+    <% if(count != 0) {
+    if(page == count) {%>
+        <li class="arrow unavailable"><a href="#" onclick="return false;">&raquo;</a></li>
+    <%}else {%>
+    <li class="arrow"><a href="<%=url%>page=<%=page+1%>">&raquo;</a></li>
+    <%}}%>
+</ul>

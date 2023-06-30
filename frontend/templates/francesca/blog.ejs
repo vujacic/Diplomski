@@ -1,0 +1,104 @@
+<%- include('header', {items: menu}) %>
+<!-- SUBHEADER
+================================================== -->
+<div id="subheader">
+	<div class="row">
+		<div class="eight columns">
+			<p class="bread leftalign">
+				You are here: <a href="/"> Home</a> / <a href="/categories">Categories</a>
+			</p>
+		</div>
+		<!--        <div class="four columns">-->
+		<!--            <div class="row collapse">-->
+		<!--                <div class="ten mobile-three columns">-->
+		<!--                    <input type="text" class="nomargin" placeholder="Search...">-->
+		<!--                </div>-->
+		<!--                <div class="two mobile-one columns">-->
+		<!--                    <a href="#" class="postfix button expand">Go</a>-->
+		<!--                </div>-->
+		<!--            </div>-->
+		<!--        </div>-->
+	</div>
+</div>
+<div class="hr">
+</div>
+<!-- CONTENT
+================================================== -->
+<div class="row">
+	<div class="twelve columns noleftmargin">
+	    <!-- MAIN CONTENT -->
+		<div class="eight columns noleftmargin">
+			<%for(var i=0; i < blog.length; i++) {%>
+				<div class="circledate">
+					<div class="textcircle">
+						<% var date = new Date(blog[i].date);%>
+						- <%=date.toLocaleString('en-GB', {day: 'numeric'})%> -<br/><%=date.toLocaleString('en-GB', {month: 'long'})%><br/> <%=date.getFullYear()%>
+					</div>
+				</div>
+				<h4><a href="/<%=blog[i].name%>"><%=blog[i].title%></a> <!--<span class="comments">3 comments</span>--></h4>
+				<div class="dots blogdots">
+				</div>
+				<p>
+					<%=blog[i].body%> ... <a href="/<%=blog[i].name%>" class="saymore">Read more</a>
+				</p>
+<!--				<p>-->
+<!--					You may have seen prettier girls than Ellin Delorane, but never one that the heart so quickly went out to. She was too much like her dead mother; had the same look of fragile delicacy, the same sweet face with its pensive sadness, the soft brown eyes and the lovely complexion. Mrs. Delorane had died of decline: people would say to one another, in confidence, they hoped Ellin might escape it. The largest and <b>best farm</b> in the neighbourhood of Timberdale, larger than even that of the Ashtons, was called the Dower Farm.-->
+<!--				</p>-->
+<!--				<p>-->
+<!--					 It belonged to Sir Robert Tenby, and had been occupied for many years by one Roger Brook, a genial, pleasant gentleman of large private means apart from his success in farming. Rich though he was, he did not disdain to see practically after his work himself; was up with the lark and out with his men, as a good farmer ought to be. Out-of-doors he was the keen, active, thorough farmer; indoors he lived as a gentleman. He had four children: three boys and one girl ... <a href="#" class="saymore">Read more</a>-->
+<!--				</p>-->
+				<div class="hr">
+				</div>
+			<%}%>
+			<!-- END POST -->
+			<br/>
+			<%- include('paginator', {url: url, page: page, count: count})%>
+		</div>
+		<!-- SIDEBAR -->
+		<div class="four columns">
+<!--			<h6 class="sidebartitle">RECENT COMMENTS</h6>-->
+<!--			<div class="avatar">-->
+<!--				<img src="http://www.wowthemes.net/demo/studiofrancesca/images/temp/author1.png" alt="">-->
+<!--			</div>-->
+<!--			<p>-->
+<!--				 Many pieces were proposed, but none seemed suitable, because each one wished to play a good ...-->
+<!--			</p>-->
+<!--			<div class="avatar">-->
+<!--				<img src="http://www.wowthemes.net/demo/studiofrancesca/images/temp/author2.png" alt="">-->
+<!--			</div>-->
+<!--			<p>-->
+<!--				 Many pieces were proposed, but none seemed suitable, because each one wished to play a good ...-->
+<!--			</p>-->
+<!--			<div class="avatar">-->
+<!--				<img src="http://www.wowthemes.net/demo/studiofrancesca/images/temp/author3.png" alt="">-->
+<!--			</div>-->
+<!--			<p>-->
+<!--				 Many pieces were proposed, but none seemed suitable, because each one wished to play a good ...-->
+<!--			</p>-->
+<!--			<br class="clear"/>-->
+<!--			<h6 class="sidebartitle">POPULAR TAGS</h6>-->
+<!--			<a href="#" class="tags">Photography</a>-->
+<!--			<a href="#" class="tags">Vintage</a>-->
+<!--			<a href="#" class="tags">Nature</a>-->
+<!--			<a href="#" class="tags">Design</a>-->
+<!--			<a href="#" class="tags">Printing</a>-->
+<!--			<a href="#" class="tags">Contemporary</a>-->
+<!--			<a href="#" class="tags">Classic</a>-->
+<!--			<a href="#" class="tags">Elegant</a>-->
+<!--			<a href="#" class="tags">Graphics</a>-->
+<!--			<br class="clear"/>-->
+			<br/><br/>
+			<h6 class="sidebartitle">CATEGORIES</h6>
+				<div>
+				<%for(var i = 0; i< cats.length; i++) {
+					var cat = cats[i];%>
+					<div style="white-space: pre-wrap"><a href="/categories?catId=<%=cat._key%>"><%=cat.name%></a></div>
+				<%}%>
+				</div>
+
+		</div>
+	</div>
+</div>
+<div class="hr">
+</div>
+<%- include('footer') %>

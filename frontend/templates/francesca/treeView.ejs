@@ -1,0 +1,13 @@
+<% if (items.length) { %>
+<ul <%if (first) { %> <%- inline %> <% } %> >
+    <% } %>
+    <% items.forEach(function(item){ %>
+        <li>
+            <a href="<%= item.name %>"><%= item.title %></a>
+            <%- include('treeView', {items: item.menu, first: false}) %>
+        </li>
+    <% }) %>
+
+    <% if (items.length) { %>
+</ul>
+<% } %>
