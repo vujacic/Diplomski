@@ -109,10 +109,10 @@ export default {
         //   label: 'Users',
         //   to: '/users'
         // },
-        // {
-        //   label: 'Settings',
-        //   to: '/settings'
-        // },
+        {
+          label: 'Site settings',
+          to: '/site-settings'
+        },
         {
           label: 'About',
           to: '/about',

@@ -30,9 +30,15 @@ export class OptionsService {
         return res;
     }
 
+    async updateAll(options: OptionDto[]){
+        let res = this.option.updateAll(options)
+        return res;
+    }
+
     async getAll(){
         let res = await Db.query(aql`
                 for c in ${this.option}
+                filter c.show == true
                 return c
                 `);
         return await res.all();

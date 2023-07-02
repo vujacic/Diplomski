@@ -11,11 +11,16 @@
     <!-- Set the viewport width to device width for mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="icon" href="images/favicon.ico">
-    <title>Test</title>
+    <title><%= options.find(x => x._key == 'sitename').value%></title>
     <!-- CSS Files-->
     <link rel="stylesheet" href="css/style.css">
 
-    <link rel="stylesheet" href="css/skins/blue.css">
+    <% var color = theme[0].value[4].value;
+    if(color){ color = `#${color}`%>
+        <%- include('./css/skins/skins.ejs', {color: color}) %>
+    <%}else{%>
+        <link rel="stylesheet" href="css/skins/blue.css">
+    <%}%>
     <!-- skin color -->
     <link rel="stylesheet" href="css/responsive.css">
 </head>
@@ -41,7 +46,7 @@
     <div class="headerlogo four columns">
         <div class="logo">
             <a href="/">
-                <h4>Test</h4>
+                <h4><%= options.find(x => x._key == 'sitename').value%></h4>
             </a>
         </div>
     </div>

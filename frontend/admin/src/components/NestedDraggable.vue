@@ -2,8 +2,7 @@
   <draggable
       class="dragArea"
       tag="ul"
-      :list="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
+      v-model="zmaj"
       :group="{ name: 'g1' }"
       item-key="uuid"
       @start="drag = true"
@@ -11,7 +10,7 @@
       invertSwap = "true"
       filter = ".p-inputtext-sm, .p-button-danger"
       :preventOnFilter=filter>
-    <template #item="{ element }">
+    <template #item = {element}>
       <li>
         <Accordion class="col-6">
         <accordion-tab>
@@ -21,7 +20,7 @@
           <div class="row">
             <div class="col">
               <label class="float-start">Link label</label>
-              <InputText class="p-inputtext-sm w-100 mb-2" type="text" :modelValue="element.title" @input="updateValue($event.target.value, element.uuid)"  placeholder="Title" />
+              <InputText class="p-inputtext-sm w-100 mb-2" type="text" v-model="element.title"  placeholder="Title" />
               <label class="float-start">Url</label>
               <InputText :disabled="element._key > 0"  class="p-inputtext-sm w-100 mb-2" type="text" :modelValue="element.name"  placeholder="Title" />
               <Button class="p-button-danger float-start" @click="removeLink(element.uuid)">Remove</Button>
@@ -64,23 +63,27 @@ export default {
       return {
         filter: ".p-inputtext-sm"
       };
+    },
+    zmaj: {
+      get(){
+        return this.modelValue
+      },
+      set(value) {
+        this.$emit('update:modelValue', value)
+      }
     }
   },
   methods: {
-    // value: {
-    //   get(){
-    //     return this.modelValue
-    //   },
-    //   set(value) {
-    //     this.$emit('update:modelValue', value)
-    //   }
-    // },
     removeLink(uuid){
-      this.$store.commit('deleteFromList', uuid);
+      // this.$store.commit('deleteFromList', uuid);
+      let mv = JSON.parse(JSON.stringify(this.modelValue));
+      let index = mv.findIndex(x => x.uuid == uuid);
+      mv.splice(index, 1);
+      this.$emit('update:modelValue', mv);
     },
-    updateValue(value, uuid){
-      this.$store.commit('updateArray', {uuid: uuid, value: value})
-    }
+    // updateValue(value, uuid){
+    //   this.$store.commit('updateArray', {uuid: uuid, value: value})
+    // }
   }
 };
 </script>

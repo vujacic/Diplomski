@@ -6,6 +6,7 @@ import Menu from "../views/Menu";
 import MenuCreate from "../views/MenuCreate";
 import Login from "../views/Login";
 import Categories from "../views/Categories";
+import Options from "../views/Options";
 
 const routes = [
   {
@@ -56,6 +57,11 @@ const routes = [
     path: '/categories',
     name: 'Categories',
     component: Categories
+  },
+  {
+    path: '/site-settings',
+    name: 'Options',
+    component: Options
   }
 ]
 

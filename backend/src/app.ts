@@ -15,6 +15,7 @@ import contentController from "./controllers/contentController";
 import authController from "./controllers/authController";
 import termController from "./controllers/termController";
 import cors from 'cors';
+import optionController from "./controllers/optionController";
 
 var app = express();
 
@@ -38,6 +39,7 @@ app.use('/api/term', termController);
 app.use('/api/auth', authController)
 app.use('/api/users', usersController);
 app.use('/api/content', contentController);
+app.use('/api/option', optionController);
 
 
 
