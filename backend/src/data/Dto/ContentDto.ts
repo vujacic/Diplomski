@@ -9,7 +9,7 @@ export class ContentDto implements Arango{
     userId: string;
     status: string;
     name: string;
-    type: string;
+    type: string[]|string;
     mimeType: string;
     date: Date;
     modified: Date;
@@ -21,5 +21,5 @@ export class ContentFilter extends ContentDto implements Filter{
     order: string;
     page: string;
     sort: string;
-
+    partial: boolean;
 }

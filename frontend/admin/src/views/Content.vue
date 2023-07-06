@@ -2,18 +2,18 @@
   <h1 v-if="create">New {{ type }}</h1>
   <h1 v-else>Edit {{ type }}</h1>
   <div class="row">
-  <div class="col-md-9">
+  <div class="col-12 col-xl-9 pb-3">
     <div class="row">
-      <div class="col-6">
+      <div class="col-12 col-md-6 pb-2">
         <label class="float-start">Title</label>
         <InputText  class="p-inputtext-sm w-100" type="text" v-model="value.title"  placeholder="Title" />
       </div>
-      <div class="col-6">
+      <div class="col-12 col-md-6 pb-2">
         <label class="float-start">Slug</label>
         <InputText class="p-inputtext-sm w-100" type="text" v-model="value.name"  placeholder="Slug" />
       </div>
       <br>
-      <div class="offset-11 col-1">
+      <div class="offset-11 col-1 pb-1">
         <Button class="float-end p-b mt-2  p-button-text" :class="show ? 'p-button-info' : 'p-button-secondary'" @click="handleHtml()" :label="btnHtml"></Button>
       </div>
     </div>
@@ -85,7 +85,7 @@
     </div>
 
   </div>
-  <div class="col-md-3" v-if="type == 'post'">
+  <div class="col-12 col-xl-3" v-if="type == 'post'">
     <category-checkbox v-model="value.categories"></category-checkbox>
   </div>
   </div>

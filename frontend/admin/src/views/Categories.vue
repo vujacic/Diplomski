@@ -1,7 +1,7 @@
 <template>
   <h1>Categories</h1>
   <div class="row">
-    <div class="col-6">
+    <div class="col-12 col-xl-6 pb-3">
       <h3>Categories</h3>
       <DataTable :value="list" :paginator="true" :rows="10" showGridlines class="p-datatable-sm">
         <Column>
@@ -15,7 +15,7 @@
       </DataTable>
     </div>
 
-    <div class="offset-1 col-3">
+    <div class="col-12 offset-xl-1 col-xl-3">
       <h3>Category</h3>
       <Panel header="Create New">
         <template #header>

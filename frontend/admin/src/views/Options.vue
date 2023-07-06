@@ -2,7 +2,7 @@
   <h1>Site settings</h1>
   <div class="row">
     <template v-for="option in options" :key="option._key">
-      <div v-if="typeof option.value != 'object' " class="col-md-3 pb-4">
+      <div v-if="typeof option.value != 'object' " class="col-12 col-md-3 pb-4">
         <label class="float-start">{{option.name}}</label>
         <InputText class="p-inputtext-sm w-100 " type="text" :disabled="option.disabled" v-model="option.value"  placeholder="" />
       </div>

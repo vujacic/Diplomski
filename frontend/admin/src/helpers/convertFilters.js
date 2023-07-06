@@ -16,7 +16,17 @@ function filterToLazy(filter){
     }
 }
 
+function lazyToFilterAndReplace(filter, lazy){
+    let lazyTransformed = lazyToFilter(lazy);
+    Object.keys(filter).forEach(key => {
+        if (key in lazyTransformed) {
+            filter[key] = lazyTransformed[key];
+        }
+    });
+}
+
 export default {
     lazyToFilter,
-    filterToLazy
+    filterToLazy,
+    lazyToFilterAndReplace
 }

@@ -3,7 +3,7 @@
   <div>
 
     <div class="row">
-      <div class="col-6">
+      <div class="col-12 col-xl-6 pb-3">
         <h3>Menus</h3>
         <DataTable :value="list" :paginator="true" :rows="10" showGridlines class="p-datatable-sm">
           <Column>
@@ -17,7 +17,7 @@
           <Column field="title" header="Title"></Column>
         </DataTable>
       </div>
-      <div class="offset-1 col-3">
+      <div class="col-12 offset-xl-1 col-xl-3">
         <h3>Add new menu</h3>
         <Panel header="Create New">
           <template #header>

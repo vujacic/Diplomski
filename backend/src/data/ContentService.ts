@@ -7,6 +7,7 @@ import {TermService} from "./TermService";
 export class ContentService{
     content = Db.collection('content');
     termEdge = Db.collection('termEdge');
+    contentView = Db.view('contentView');
     termService = new TermService();
 
     constructor() {
@@ -51,18 +52,30 @@ export class ContentService{
                 for c in ${this.content}
                 filter
                 (${filter.title} == "" or like(c.title, CONCAT('%',${filter.title},'%'), true))
-                and (${filter.type} == "" or c.type == ${filter.type})
+                and (${filter.type} == [] or c.type in ${filter.type})
                 and (${filter.status} == "" or c.status == ${filter.status})
                 and (${filter.name} == "" or c.name == ${filter.name})
                 sort c.${filter.sort} ${filter.order}
                 limit ${paging.page}, ${paging.limit}
-                return c
+                return !${filter.partial} ? c :
+                    {
+                        _id: c._id,
+                        _key: c._key,
+                        _rev: c._rev, 
+                        title: c.title,
+                        body: left(c.body, 255),
+                        userId: c.userId,
+                        status: c.status,
+                        name: c.name,
+                        type: c.type,
+                        date: c.date
+                    }
                 `);
             let cursor = await Db.query(aql`
                 for c in ${this.content}
                 filter
                 (${filter.title} == "" or like(c.title, CONCAT('%',${filter.title},'%'), true))
-                and (${filter.type} == "" or c.type == ${filter.type})
+                and (${filter.type} == [] or c.type in ${filter.type})
                 and (${filter.status} == "" or c.status == ${filter.status})
                 and (${filter.name} == "" or c.name == ${filter.name})
                 collect with count into length
@@ -105,7 +118,19 @@ export class ContentService{
                     filter c._id in edges
                 sort c.${filter.sort} ${filter.order}
                 limit ${paging.offset}, ${paging.limit}
-                return c
+                return !${filter.partial} ? c :
+                    {
+                        _id: c._id,
+                        _key: c._key,
+                        _rev: c._rev, 
+                        title: c.title,
+                        body: left(c.body, 255),
+                        userId: c.userId,
+                        status: c.status,
+                        name: c.name,
+                        type: c.type,
+                        date: c.date
+                    }
                 `);
         let cursor = await Db.query(aql`
                 for c in ${this.content}
@@ -118,5 +143,41 @@ export class ContentService{
             `);
         let count1 = await cursor.next();
         return {"count": count1, "list": await res.all()};
+    }
+
+    async getByViewSearch(filter){
+        parseContentFilter(filter);
+        let paging = getFilter(filter);
+
+        let res = await Db.query(aql`
+            for c in ${this.contentView} 
+            search analyzer(c.body in tokens(${filter.title}, "pip"), "pip")
+            || analyzer(c.title in tokens(${filter.title}, "pip"), "pip")
+            FILTER c.type in ['post', 'page']
+            sort tfidf(c) desc
+            limit ${paging.page}, ${paging.limit}
+            return
+            {
+                _id: c._id,
+                _key: c._key,
+                title: c.title,
+                body: left(c.body, 255),
+                name: c.name,
+                date: c.date
+            }
+        `);
+
+        let cursor = await Db.query(aql`
+             for c in ${this.contentView} 
+            search analyzer(c.body in tokens(${filter.title}, "pip"), "pip")
+            || analyzer(c.title in tokens(${filter.title}, "pip"), "pip")
+            FILTER c.type in ['post', 'page']
+            sort tfidf(c) desc
+            collect with count into length
+            return length
+        `);
+        let count1 = await cursor.next();
+        return {"count": count1, "list": await res.all()};
+
     }
 }

@@ -1,7 +1,7 @@
 <template>
   <h1>Edit menu</h1>
   <div class="row">
-    <div class="col-3">
+    <div class="col-12 col-xl-3">
       <h3>Menu Items</h3>
       <panel header="Pages" :toggleable="true">
         <div class="row">
@@ -31,7 +31,7 @@
 
     </div>
 
-    <div class="col-9">
+    <div class="col-12 col-xl-9">
       <h3>Menu</h3>
       <panel>
         <template #header>
@@ -107,7 +107,8 @@ export default {
         sort: "date",
         title: event.query,
         status: "published",
-        type: "post"
+        type: ["post", "page"],
+        partial: true
       }
       contentService.getPagedContent(params)
           .then(response =>{

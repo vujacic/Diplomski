@@ -12,7 +12,7 @@
       :preventOnFilter=filter>
     <template #item = {element}>
       <li>
-        <Accordion class="col-6">
+        <Accordion class="col-12 col-md-10 col-lg-8 col-xl-6">
         <accordion-tab>
           <template #header>
             {{element.title}}

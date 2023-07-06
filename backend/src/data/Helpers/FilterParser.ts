@@ -14,8 +14,11 @@ export function getFilter(source: Filter){
 
 export function parseContentFilter(source: ContentFilter){
     if(!source.type){
-        source.type = "";
+        source.type = [];
+    } else if(typeof source.type == "string"){
+        source.type = [source.type]
     }
+
     if(!source.title){
         source.title = "";
     }
@@ -25,4 +28,5 @@ export function parseContentFilter(source: ContentFilter){
     if(!source.name){
         source.name = "";
     }
+    source.partial = Boolean(source.partial);
 }

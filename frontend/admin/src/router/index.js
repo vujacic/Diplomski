@@ -74,6 +74,7 @@ router.beforeEach( (to) => {
   if(!sessionStorage.getItem('token') && to.name != 'Login'){
     return '/login';
   }
+
 })
 
 export default router

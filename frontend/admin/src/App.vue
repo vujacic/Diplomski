@@ -10,15 +10,16 @@
 
     <div class="container-fluid">
       <div class="row" v-if="$route.path != '/login'">
-        <div class="col col-md-2">
+        <div class="col-12 col-md-2 pb-3">
 <!--          <PanelMenu :model="items"></PanelMenu>-->
-          <PanelMenu :model="items" @click="highlight($event)">
-<!--            <template #default="{item}">-->
+          <PanelMenu :model="items"  >
+<!--            v-model:expandedKeys="expandedKeys" active="true" focused = "true"-->
+<!--            <template #default="{item}"> @click="highlight($event)"-->
 <!--              <router-link :to="item.to">{{item.label}}</router-link>-->
 <!--            </template>-->
           </PanelMenu>
         </div>
-        <div class="col-10">
+        <div class="col-12 col-md-10">
           <Card class="p-x-1">
             <template #content>
               <router-view :key="$route.path"/>
@@ -59,78 +60,90 @@ export default {
   },
   data() {
     return {
-      items:[
+      items: [
         {
-          label: 'Home',
-          icon: 'pi pi-fw pi-home',
-          to: '/'
-        },
-        {
-          label: 'Posts',
-          // to: '/content-list',
-          items: [
-            {
-              label: 'View Posts',
-              to: '/list/post'
-            },
-            {
-              label: 'New Post',
-              to: '/content/post'
-            },
-            {
-              label: 'Categories',
-              to: '/categories'
-            }
-          ]
-        },
-        {
-          label: 'Pages',
-          // to: '/content-list',
-          items: [
-            {
-              label: 'View Pages',
-              to: '/list/page'
-            },
-            {
-              label: 'New Page',
-              to: '/content/page'
-            }
-          ]
-        },
-        // {
-        //   label: 'Media',
-        //   to: '/media'
-        // },
-        {
+          key: '0',
           label: 'Menu',
-          to: '/menu'
-        },
-        // {
-        //   label: 'Users',
-        //   to: '/users'
-        // },
-        {
-          label: 'Site settings',
-          to: '/site-settings'
-        },
-        {
-          label: 'About',
-          to: '/about',
-        },
-        {
-          label: 'Users',
           class: 'customLogout',
-          items: [
+          items:[
             {
-              label: 'Manage users',
-              // to: '/users'
+              key: '1',
+              label: 'Home',
+              icon: 'pi pi-fw pi-home',
+              to: '/'
             },
             {
-              label: 'Logout',
-              command: () => {
-                sessionStorage.removeItem('token');
-                location.reload();
-              }
+              label: 'Posts',
+              key: '2',
+              // to: '/content-list',
+              items: [
+                {
+                  key: '3',
+                  label: 'View Posts',
+                  to: '/list/post'
+                },
+                {
+                  key: '4',
+                  label: 'New Post',
+                  to: '/content/post'
+                },
+                {
+                  key: '5',
+                  label: 'Categories',
+                  to: '/categories'
+                }
+              ]
+            },
+            {
+              label: 'Pages',
+              key: '6',
+              // to: '/content-list',
+              items: [
+                {
+                  key: '7',
+                  label: 'View Pages',
+                  to: '/list/page'
+                },
+                {
+                  key: '8',
+                  label: 'New Page',
+                  to: '/content/page'
+                }
+              ]
+            },
+            {
+              key: '9',
+              label: 'Menu',
+              to: '/menu'
+            },
+            {
+              key: '10',
+              label: 'Site settings',
+              to: '/site-settings'
+            },
+            {
+              key: '11',
+              label: 'About',
+              to: '/about',
+            },
+            {
+              label: 'Users',
+              key: '12',
+              items: [
+                {
+                  key: '13',
+                  label: 'Manage users',
+                  // to: '/users'
+                },
+                {
+                  key: '14',
+                  label: 'Logout',
+                  command: () => {
+                    sessionStorage.removeItem('token');
+                    location.reload();
+                  }
+                }
+              ]
             }
           ]
         }
@@ -141,7 +154,7 @@ export default {
   computed: {
     loading(){
       return this.$store.state.loading;
-    }
+    },
   },
   methods:{
     highlight(event){
@@ -164,7 +177,7 @@ export default {
 
       });
 
-    }
+    },
   }
 }
 </script>
@@ -201,7 +214,7 @@ body{
 .router-link-exact-active {
   color: #42b983!important;
 }
-.customLogout ul li:last-child a span{
+.customLogout li:last-child ul li:last-child a span{
   color: red !important;
 }
 </style>

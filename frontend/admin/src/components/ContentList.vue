@@ -1,9 +1,28 @@
 <template>
   <div>
   <h1>All {{type}}s</h1>
+    <form @submit="search">
+    <div class="row">
+      <div class="col-12 col-md-4 col-xl-3 pb-3">
+        <label class="float-start">Title</label>
+        <InputText class="p-inputtext-sm w-100" type="text" v-model="filter.title"  placeholder="Title" />
+      </div>
+      <div class="col-12 col-md-4 col-xl-3 pb-3">
+        <label class="float-start">Slug</label>
+        <InputText class="p-inputtext-sm w-100" type="text" v-model="filter.name"  placeholder="Slug (exact match)" />
+      </div>
+      <div class="col-12 col-md-4 col-xl-3 pb-3">
+        <label class="float-start">Status</label>
+        <Dropdown class="p-inputtext-sm w-100" type="text" v-model="filter.status" :options="['', 'published', 'not published']"  placeholder="Select status" />
+      </div>
+      <div class="col-12 col-md-4 col-xl-3 d-inline-flex justify-content-start pb-3">
+        <Button type="submit" class="align-self-end w-100 justify-content-center">Search</Button>
+      </div>
+    </div>
+    </form>
     <div class="row">
       <div class="col-12">
-        <DataTable :value="list" :lazy="true" :paginator="true" :rows="lazyParams.rows" showGridlines
+        <DataTable :value="list" :lazy="true" :paginator="true" :rows="lazyParams.rows" showGridlines :first="lazyParams.first" :sortField="lazyParams.sortField" :sortOrder="lazyParams.sortOrder"
                    @page="onPage($event)" @sort="onSort($event)" :totalRecords="count" class="p-datatable-sm"
                    :rowsPerPageOptions="[10,20,30]">
           <Column>
@@ -13,6 +32,7 @@
             </template>
           </Column>
           <Column field="title" header="Title" :sortable="true"></Column>
+          <Column field="name" header="Slug"></Column>
           <Column field="userId" header="User"></Column>
           <Column field="status" header="Status"></Column>
           <Column field="date" header="Created" :sortable="true"></Column>
@@ -39,9 +59,11 @@ import Column from "primevue/column";
 import {contentService} from  "../services/Services"
 
 import convertFilters from "../helpers/convertFilters";
-import Button from "primevue/button"
 import Dialog from "primevue/dialog"
 import Tooltip from "primevue/tooltip";
+import InputText from "primevue/inputtext";
+import Dropdown from "primevue/dropdown";
+import Button from 'primevue/button'
 
 export default {
   name: "ContentList",
@@ -49,7 +71,9 @@ export default {
     DataTable,
     Column,
     Button,
-    Dialog
+    Dialog,
+    InputText,
+    Dropdown,
   },
   directives:{
     tp: Tooltip
@@ -74,16 +98,27 @@ export default {
   methods:{
     onPage(event) {
       this.lazyParams = event;
-      this.filter = convertFilters.lazyToFilter(this.lazyParams);
+
+      let oldLimit = this.filter.limit;
+      convertFilters.lazyToFilterAndReplace(this.filter, this.lazyParams);
+      if (this.filter.limit != oldLimit){
+        this.filter.page=0;
+        this.lazyParams.first = 0;
+      }
+
       this.loadLazyData();
     },
     onSort(event) {
       this.lazyParams = event;
-      this.filter = convertFilters.lazyToFilter(this.lazyParams);
+
+      convertFilters.lazyToFilterAndReplace(this.filter, this.lazyParams);
+
       this.loadLazyData();
     },
     loadLazyData(){
-      this.filter.type=this.type
+      this.filter.type=this.type;
+      sessionStorage.setItem(this.type, JSON.stringify(this.filter));
+      this.filter.partial = true;
       contentService.getPagedContent(this.filter)
           .then(response =>{
             this.list = response.data.list;
@@ -96,6 +131,12 @@ export default {
             severity: 'error', summary: 'Error',
             detail: er.toString(), life: 3000
           }));
+    },
+    search(e){
+      e.preventDefault();
+      this.lazyParams.first=0;
+      convertFilters.lazyToFilterAndReplace(this.filter, this.lazyParams)
+      this.loadLazyData();
     },
     editPage(page) {
       this.$router.push({path: `/content/${this.type}/${page._key}`});
@@ -130,14 +171,26 @@ export default {
         () => this.$route.params,
         (/*toParams, previousParams*/) =>{
           this.type = this.$route.params.type;
+
+          let sFilter = JSON.parse(sessionStorage.getItem(this.type));
+          if(sFilter)
+            this.filter=sFilter;
+
           this.lazyParams = convertFilters.filterToLazy(this.filter)
+
           this.loadLazyData();
         }
     )
   },
   mounted() {
     this.type = this.$route.params.type;
-    this.lazyParams = convertFilters.filterToLazy(this.filter)
+
+
+    let sFilter = JSON.parse(sessionStorage.getItem(this.type));
+    if(sFilter)
+      this.filter=sFilter;
+
+      this.lazyParams = convertFilters.filterToLazy(this.filter)
     this.loadLazyData();
   }
 }
