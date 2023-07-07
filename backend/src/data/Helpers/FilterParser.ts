@@ -22,6 +22,7 @@ export function parseContentFilter(source: ContentFilter){
     if(!source.title){
         source.title = "";
     }
+    source.title = source.title.trim()
     if(!source.status){
         source.status = "";
     }

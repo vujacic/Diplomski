@@ -149,10 +149,17 @@ export class ContentService{
         parseContentFilter(filter);
         let paging = getFilter(filter);
 
+        let phrase = filter.title.includes(' ');
+
         let res = await Db.query(aql`
             for c in ${this.contentView} 
-            search analyzer(c.body in tokens(${filter.title}, "pip"), "pip")
-            || analyzer(c.title in tokens(${filter.title}, "pip"), "pip")
+            search analyzer(
+                 (!${phrase} && like(c.body, concat('%', tokens(${filter.title}, "pip")[0], '%')))
+                || (${phrase} && phrase(c.body, tokens(${filter.title}, "pip")))
+                ||
+                (!${phrase} && like(c.title, concat('%', tokens(${filter.title}, "pip")[0], '%')))
+                || (${phrase} && phrase(c.title, tokens(${filter.title}, "pip")))
+            , "pip")
             FILTER c.type in ['post', 'page']
             sort tfidf(c) desc
             limit ${paging.page}, ${paging.limit}
@@ -165,19 +172,10 @@ export class ContentService{
                 name: c.name,
                 date: c.date
             }
-        `);
+        `, {fullCount: true});
 
-        let cursor = await Db.query(aql`
-             for c in ${this.contentView} 
-            search analyzer(c.body in tokens(${filter.title}, "pip"), "pip")
-            || analyzer(c.title in tokens(${filter.title}, "pip"), "pip")
-            FILTER c.type in ['post', 'page']
-            sort tfidf(c) desc
-            collect with count into length
-            return length
-        `);
-        let count1 = await cursor.next();
-        return {"count": count1, "list": await res.all()};
+        const res1 = await res.all();
+        return {"count": res.extra.stats?.fullCount, "list": res1};
 
     }
 }

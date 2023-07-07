@@ -95,7 +95,7 @@ router.get('/search', async function (req, res, next){
 
     let r = [], pageNo = 0, error;
     if(title && title.length >= 3){
-        let res1 = await contentService.getBySearch({page: page-1, limit: limit, title: title})
+        let res1 = await contentService.getBySearch({page: (page-1)*limit, limit: limit, title: title})
          r = res1.data.list;
         // console.log(r);
         r.forEach((x)=>{
